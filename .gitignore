@@ -1,0 +1,62 @@
+# Model files (download separately from ModelScope)
+models/
+
+# PyInstaller build artifacts
+dist/
+build/
+*.spec.bak
+
+# Distribution package
+VoiceInput_dist/
+VoiceInput.zip
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Runtime config (generated on first run)
+voice_input_config.json
+
+# Logs
+*.log
+
+# Node / JavaScript
+node_modules/
+package.json
+package-lock.json
+
+# Claude / IDE internal files
+.claude/
+.agents/
+.tokenicode/
+
+# Other projects in this directory (not voice-input)
+ysm-model/
+xiaobai-skills/
+gundb_classes/
+tacz_classes/
+createimp_extract/
+patch_createimp/
+
+# Specs / design docs (internal)
+docs/
+
+# Unrelated files
+*.traineddata
+*.bin
+c-drive-cleanup.html
+roman-clock.html
+ocr_test.*
+research-*.md
+skills-lock.json
+temp_icon_issue.png
+tokenicode-*.exe
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
