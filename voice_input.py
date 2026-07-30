@@ -24,7 +24,7 @@ import tkinter as tk
 
 from voice_input_config import load_config, save_config
 from voice_input_indicator import FloatingIndicator
-from voice_input_settings import SettingsWindow
+from voice_input_settings_pyside import GlassSettingsWindow
 
 # ═══════════════════════════════════════════════════════════
 # Logging to file (since pythonw has no console)
@@ -251,7 +251,7 @@ def _register_hotkeys():
             _try_register_hotkey(key, action)
 
     settings_key = hk.get("settings")
-    if settings_key:
+    if settings_key and settings_key != "点击录制":
         try:
             keyboard.add_hotkey(settings_key, open_settings, suppress=False)
             log.info("Settings hotkey: %s", settings_key)
@@ -316,12 +316,19 @@ def exit_app():
 
 def open_settings():
     """Open settings window (from hotkey or tray menu)."""
+    log.info("open_settings() called — scheduling on tk thread")
     _tk_root.after(0, _do_open_settings)
 
 def _do_open_settings():
-    """Actually open settings — must run on tk main thread."""
+    """Actually open settings — must run on tk main thread.
+    Launches PySide6 glass settings window (modal: blocks tkinter while open)."""
     global _config
-    SettingsWindow.show(_tk_root, _config, on_settings_saved)
+    log.info("_do_open_settings() — launching PySide6 settings")
+    try:
+        GlassSettingsWindow.show_settings(_config, on_settings_saved)
+        log.info("PySide6 settings window closed")
+    except Exception as e:
+        log.error("Settings window crash: %s", e, exc_info=True)
 
 def on_settings_saved(new_config: dict):
     """Called after user saves settings."""
