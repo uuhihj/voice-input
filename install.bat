@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-title Voice Input 一键安装
+title 衔音令 一键安装
 cd /d "%~dp0"
 
 echo.

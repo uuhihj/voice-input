@@ -400,7 +400,7 @@ class GlassSettingsWindow(QWidget):
     # ═════════════════════════════════════════════════════════
 
     def _build(self):
-        self.setWindowTitle("Voice Input 设置")
+        self.setWindowTitle("衔音令 设置")
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.setFixedSize(540, 740)
@@ -481,7 +481,7 @@ class GlassSettingsWindow(QWidget):
         vbox.setSpacing(2)
         row = QHBoxLayout()
         row.setSpacing(4)
-        row.addWidget(L("✦  Voice Input  设置", bold=True, size=13))
+        row.addWidget(L("✦  衔音令  设置", bold=True, size=13))
         row.addStretch()
         min_btn = QPushButton("—")
         min_btn.setObjectName("min_btn")

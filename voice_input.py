@@ -130,7 +130,7 @@ def load_model():
             log.info("Model loaded successfully on %s/%s", device, compute)
             _set_tray_state("idle")
             if _config["appearance"].get("show_tray_notifications", True) and tray_icon:
-                tray_icon.notify(f"Voice Input ready ({DEVICE})", "Voice Input")
+                tray_icon.notify(f"衔音令 就绪 ({DEVICE})", "衔音令")
             return
         except Exception as e:
             log.error("%s/%s failed: %s", device, compute, e)
@@ -373,7 +373,7 @@ def _set_tray_state(state: str):
     if tray_icon:
         if state == "idle":
             tray_icon.icon = _ICON_IDLE
-            tray_icon.title = "Voice Input — 就绪"
+            tray_icon.title = "衔音令 — 就绪"
         elif state == "recording":
             tray_icon.icon = _ICON_RECORDING
             tray_icon.title = "● 录音中... (快捷键停止)"
@@ -398,13 +398,13 @@ def _setup_tray():
     global tray_icon
     img = _create_tray_image()
     menu = pystray.Menu(
-        pystray.MenuItem("🎤 Voice Input", lambda: None, enabled=False),
+        pystray.MenuItem("🎤 衔音令", lambda: None, enabled=False),
         pystray.Menu.SEPARATOR,
         pystray.MenuItem("⚙️ 设置", open_settings),
         pystray.Menu.SEPARATOR,
         pystray.MenuItem("退出", lambda: exit_app()),
     )
-    tray_icon = pystray.Icon("voice_input", img, "Voice Input", menu)
+    tray_icon = pystray.Icon("voice_input", img, "衔音令", menu)
     return tray_icon
 
 # ═══════════════════════════════════════════════════════════
