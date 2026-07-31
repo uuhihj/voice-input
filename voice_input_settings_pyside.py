@@ -842,14 +842,13 @@ class GlassSettingsWindow(QWidget):
         """Open the PySide6 glass settings window.
         Blocks until the window is closed via save or close button.
         """
-        # Always create a fresh QApplication — PySide6 can't restart exec()
-        # on a previously quit application.
+        import shiboken6
+
         old = QApplication.instance()
         if old is not None:
-            # Delete old instance so we can create a fresh one
             old.quit()
-            # Process any pending events before destroying
             QApplication.processEvents()
+            shiboken6.delete(old)
 
         app = QApplication(sys.argv)
         app.setQuitOnLastWindowClosed(False)
@@ -858,5 +857,4 @@ class GlassSettingsWindow(QWidget):
         win = GlassSettingsWindow(config, on_save)
         win.show()
         app.exec()
-        # Clean up — next call will create a fresh app
         del win
