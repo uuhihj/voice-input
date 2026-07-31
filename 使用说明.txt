@@ -1,43 +1,39 @@
 🎤 Voice Input — 语音输入工具
 
 === 系统要求 ===
-- Windows 10/11 64位
-- NVIDIA 显卡 (RTX 20系列及以上，6GB+ 显存)
-- 麦克风
+Windows 10/11 64位
+NVIDIA 显卡（RTX 20系列及以上，6GB+ 显存）
+麦克风
+Python 3.12+
 
-=== 使用方法 ===
-1. 解压到任意目录（不要放在需要管理员权限的文件夹）
-2. 确保 models 文件夹与 VoiceInput.exe 在同一目录
-3. 双击 VoiceInput.exe 运行
-4. 系统托盘出现绿色图标表示就绪
+=== 快速安装 ===
+1. 安装 Python 3.12+（python.org 下载，勾选 "Add to PATH"）
+2. 双击 install.bat 安装依赖（或手动 pip install -r requirements.txt）
+3. 下载语音模型到 models 文件夹：
+   pip install modelscope
+   modelscope download --model keepitsimple/faster-whisper-large-v3 --local_dir ./models
+4. 双击 voice_input_launcher.bat 运行
 
 === 快捷键 ===
-- Alt + Numpad+    开始/停止录音（录制键）
-- Alt + Numpad-    退出程序
-- 右键托盘图标 → 设置  打开设置面板
+Alt + Numpad+     开始/停止录音
+Alt + Numpad-     退出程序
+右键托盘图标 → 设置  打开设置面板
 
 === 设置说明 ===
-在设置中可以修改：
-- 快捷键：录制键、退出键、设置键
-- 模型：模型路径、运行设备（CUDA/CPU）
-- 外观：指示器颜色、位置、不透明度、通知开关
+右键托盘图标 → 设置，打开毛玻璃设置窗口：
+• 快捷键：录制键、退出键、设置键（点击按钮录制）
+• 模型：模型路径、运行设备（CUDA/CPU）、精度
+• 外观：指示器颜色、位置、不透明度、托盘通知
 
 === 常见问题 ===
-Q: 双击没反应？
-A: 检查 models 文件夹是否存在且完整
+Q: 提示 "Model not found"？
+A: 模型还没下载，按上面步骤下载模型到 models/ 目录
 
-Q: 提示"Cannot load model"？
-A: 检查显卡驱动和 CUDA 是否正常
-
-Q: 录音后没输出文字？
-A: 确认麦克风工作正常，检查音量
+Q: 提示 "Cannot load model"？
+A: 显卡驱动或 CUDA 问题，设置里切到 CPU 试试
 
 Q: 托盘图标看不到？
-A: Windows 会自动隐藏不常用的图标，点击任务栏 ^ 展开
-   录音时屏幕顶部会出现红色指示条
+A: Windows 会自动隐藏图标，点任务栏 ^ 展开
 
-=== 文件说明 ===
-VoiceInput.exe          主程序
-models/                 语音识别模型（必须保留）
-voice_input_config.json 配置文件（自动生成）
-使用说明.txt            本文件
+Q: 点设置没反应？
+A: 关闭所有 Python 进程后重试

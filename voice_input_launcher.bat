@@ -1,5 +1,4 @@
 @echo off
-title Voice Input (Alt+Numpad+)
-cd /d D:\workwork\ai\code
-python voice_input.py
-pause
+title Voice Input
+cd /d "%~dp0"
+pythonw voice_input.py
