@@ -42,6 +42,9 @@ patch_createimp/
 # Specs / design docs (internal)
 docs/
 
+# Other projects in this directory (not voice-input)
+my-video/
+
 # Unrelated files
 *.traineddata
 *.bin

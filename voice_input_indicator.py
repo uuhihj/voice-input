@@ -60,9 +60,15 @@ class FloatingIndicator:
         win.configure(bg=color)
 
         sw = win.winfo_screenwidth()
+        sh = win.winfo_screenheight()
         h = 36
-        y = 0 if position == "top" else win.winfo_screenheight() - h
-        win.geometry(f"280x{h}+{(sw - 280) // 2}+{y}")
+        y = 0 if position == "top" else sh - h
+        geo = f"280x{h}+{(sw - 280) // 2}+{y}"
+        log.info("Indicator pos=%s screen=%sx%s geometry=%s", position, sw, sh, geo)
+        win.geometry(geo)
+        win.update_idletasks()
+        win.update()
+        log.info("Indicator actual position: x=%s y=%s size=%s", win.winfo_x(), win.winfo_y(), win.winfo_geometry())
 
         tk.Label(win, text="● 正在录音中...  按快捷键停止",
                  fg="white", bg=color,
