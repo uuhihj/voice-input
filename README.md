@@ -62,6 +62,7 @@ voice_input.py                   主程序
 voice_input_config.py            配置
 voice_input_settings_pyside.py   设置窗口
 voice_input_indicator.py         录音提示条
+voice_input_autostart.py         开机自启（启动文件夹快捷方式）
 requirements.txt                 依赖列表
 ```
 

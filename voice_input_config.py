@@ -32,6 +32,9 @@ DEFAULT_CONFIG = {
         "indicator_opacity": 0.88,
         "show_tray_notifications": True,
     },
+    "general": {
+        "autostart": False,
+    },
 }
 
 

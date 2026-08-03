@@ -25,6 +25,7 @@ import tkinter as tk
 from voice_input_config import load_config, save_config
 from voice_input_indicator import FloatingIndicator
 from voice_input_settings_pyside import GlassSettingsWindow
+import voice_input_autostart as autostart
 
 # ═══════════════════════════════════════════════════════════
 # Logging to file (since pythonw has no console)
@@ -336,6 +337,14 @@ def on_settings_saved(new_config: dict):
     _config = new_config
     save_config(_config)
 
+    # Apply autostart setting (create/remove startup shortcut)
+    try:
+        autostart_enabled = _config.get("general", {}).get("autostart", False)
+        autostart.set_enabled(autostart_enabled)
+        log.info("Autostart: %s", "on" if autostart_enabled else "off")
+    except Exception as e:
+        log.error("Autostart update failed: %s", e)
+
     # Re-register hotkeys
     _register_hotkeys()
 
@@ -415,6 +424,15 @@ def main():
 
     signal.signal(signal.SIGINT, signal.SIG_IGN)
     log.info("=== Voice Input starting ===")
+
+    # 0. Self-heal: config wants autostart but shortcut is missing → re-create.
+    #    (Never removes an existing shortcut here — only settings save disables.)
+    try:
+        if _config.get("general", {}).get("autostart"):
+            autostart.set_enabled(True)
+            log.info("Autostart shortcut ensured")
+    except Exception as e:
+        log.error("Autostart sync failed: %s", e)
 
     # 1. Load model on main thread (avoids tkinter thread conflicts)
     load_model()

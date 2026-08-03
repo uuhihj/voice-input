@@ -15,6 +15,8 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, QPoint, QEvent, QTimer
 from PySide6.QtGui import QColor, QBitmap, QPainter
 
+from voice_input_autostart import is_enabled as autostart_is_enabled
+
 
 # ═══════════════════════════════════════════════════════════
 # Windows acrylic
@@ -431,7 +433,8 @@ class GlassSettingsWindow(QWidget):
         tab_row = QHBoxLayout()
         tab_row.setSpacing(8)
         self._tab_btns = {}
-        for key, text in [("shortcuts", "快捷键"), ("model", "模型"), ("appearance", "外观")]:
+        for key, text in [("shortcuts", "快捷键"), ("model", "模型"),
+                          ("appearance", "外观"), ("general", "常规")]:
             btn = QPushButton(text)
             btn.setObjectName("tab_btn_active" if key == "shortcuts" else "tab_btn")
             btn.setCursor(Qt.PointingHandCursor)
@@ -450,6 +453,7 @@ class GlassSettingsWindow(QWidget):
         self._build_shortcuts()
         self._build_model()
         self._build_appearance()
+        self._build_general()
         self._switch_tab("shortcuts")
 
         root.addSpacing(16)
@@ -783,6 +787,38 @@ class GlassSettingsWindow(QWidget):
         }
 
     # ═════════════════════════════════════════════════════════
+    # General page
+    # ═════════════════════════════════════════════════════════
+
+    def _build_general(self):
+        page = QWidget()
+        page.setStyleSheet("background: transparent;")
+        layout = QVBoxLayout(page)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(8)
+
+        card, c = self._card("开机自启")
+        self._autostart_cb = QCheckBox("登录 Windows 后自动启动衔音令")
+        self._autostart_cb.setStyleSheet("font-weight: bold;")
+        c.addWidget(self._autostart_cb)
+        c.addWidget(L("勾选后，开机登录即自动在后台运行，无需手动启动。", size=10, color="#C8C0BC"))
+        layout.addWidget(card)
+
+        layout.addStretch()
+        page.hide()
+        self._stack.addWidget(page)
+        self._pages["general"] = page
+
+        gc = self._config.get("general", {})
+        # Reflect reality: config is source of truth, but also check the actual
+        # shortcut so a pre-existing manual setup shows as enabled.
+        self._autostart_cb.setChecked(
+            gc.get("autostart", False) or autostart_is_enabled())
+
+    def _collect_general(self):
+        return {"autostart": self._autostart_cb.isChecked()}
+
+    # ═════════════════════════════════════════════════════════
     # Save / Reset
     # ═════════════════════════════════════════════════════════
 
@@ -791,6 +827,7 @@ class GlassSettingsWindow(QWidget):
         new_config["hotkeys"] = self._collect_shortcuts()
         new_config["model"] = self._collect_model()
         new_config["appearance"] = self._collect_appearance()
+        new_config["general"] = self._collect_general()
         # Merge into original config to keep any extra keys
         self._config.clear()
         self._config.update(new_config)
@@ -817,6 +854,8 @@ class GlassSettingsWindow(QWidget):
         self._pos_top.setChecked(ac.get("indicator_position") == "top")
         self._op_slider.setValue(int(ac.get("indicator_opacity", 0.88) * 100))
         self._tray_cb.setChecked(ac.get("show_tray_notifications", True))
+        gc = self._config.get("general", {})
+        self._autostart_cb.setChecked(gc.get("autostart", False))
         self._flash_button("已恢复默认", "#FF9800")
 
     def _flash_button(self, msg, color):
